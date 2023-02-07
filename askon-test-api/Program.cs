@@ -21,6 +21,6 @@ app.UseSwagger();
 
 app.UseSwaggerUI();
 
-app.MapGet("/login", (LoginRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
+app.MapPost("/login", (LoginRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
 
 app.Run();

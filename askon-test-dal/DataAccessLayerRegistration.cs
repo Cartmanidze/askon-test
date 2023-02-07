@@ -22,13 +22,13 @@ public static class DataAccessLayerRegistration
 		services.AddDbContext<AskonContext>(opt =>
 			opt.UseSqlServer(configuration.GetConnectionString("AskonConnection")));
 
-		var builder = services.AddIdentityCore<User>();
-
-		var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
-
-		identityBuilder.AddEntityFrameworkStores<AskonContext>();
-
-		identityBuilder.AddSignInManager<SignInManager<User>>();
+		services.AddIdentity<User, IdentityRole<Guid>>(options =>
+			{
+				options.User.RequireUniqueEmail = false;
+			})
+			.AddEntityFrameworkStores<AskonContext>()
+			.AddDefaultTokenProviders()
+			.AddSignInManager<SignInManager<User>>();
 
 		return services;
 	}
