@@ -16,10 +16,10 @@ public static class DataAccessLayerRegistration
 	/// Добавить сервисы для слоя данных
 	/// </summary>
 	/// <param name="services"> Сервисы </param>
-	public static IServiceCollection AddDalServices(IServiceCollection services, IConfiguration configuration)
+	public static IServiceCollection AddDalServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.AddDbContext<AskonContext>(opt =>
-			opt.UseSqlServer(configuration.GetConnectionString("default")));
+			opt.UseSqlServer(configuration.GetConnectionString("AskonConnection")));
 
 		var builder = services.AddIdentityCore<User>();
 
