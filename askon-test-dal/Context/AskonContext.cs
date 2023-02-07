@@ -8,6 +8,11 @@ namespace askon_test_dal.Context;
 /// <inheritdoc />
 public class AskonContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
+	/// <inheritdoc />
+	public AskonContext(DbContextOptions<AskonContext> options) : base(options)
+	{
+	}
+
 	/// <summary>
 	/// Информация о пользователе
 	/// </summary>
