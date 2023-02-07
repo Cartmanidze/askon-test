@@ -5,7 +5,7 @@ namespace askon_test_domain.Users;
 /// <summary>
 /// Пользователь
 /// </summary>
-public class User : IdentityUser
+public class User : IdentityUser<Guid>
 {
 	/// <summary>
 	/// Эл.почта
