@@ -21,4 +21,9 @@ public class User : IdentityUser
 	/// Отчество
 	/// </summary>
 	public string? MiddleName { get; set; }
+
+	/// <summary>
+	/// Информация о пользователе
+	/// </summary>
+	public UserInfo UserInfo { get; set; }
 }
