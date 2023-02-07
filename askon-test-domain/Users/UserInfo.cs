@@ -13,17 +13,17 @@ public class UserInfo
 	/// <summary>
 	/// Описание профиля
 	/// </summary>
-	public string Description { get; set; }
+	public string? Description { get; set; }
 
 	/// <summary>
 	/// Путь к изображению профиля
 	/// </summary>
-	public string Avatar { get; set; }
+	public string? Avatar { get; set; }
 
 	/// <summary>
 	/// Псевдоним
 	/// </summary>
-	public string NickName { get; set; }
+	public string NickName { get; set; } = null!;
 
 	/// <summary>
 	/// Идентификатор пользователя
@@ -33,5 +33,5 @@ public class UserInfo
 	/// <summary>
 	/// Пользователь
 	/// </summary>
-	public User User { get; set; }
+	public User? User { get; set; }
 }

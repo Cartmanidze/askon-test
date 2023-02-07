@@ -16,6 +16,7 @@ public static class DataAccessLayerRegistration
 	/// Добавить сервисы для слоя данных
 	/// </summary>
 	/// <param name="services"> Сервисы </param>
+	/// <param name="configuration"> Конфигурация приложения </param>
 	public static IServiceCollection AddDalServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.AddDbContext<AskonContext>(opt =>

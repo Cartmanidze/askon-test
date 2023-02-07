@@ -7,5 +7,8 @@ namespace askon_test_dal.Context;
 /// <inheritdoc />
 public class AskonContext : IdentityDbContext<User>
 {
-	public DbSet<UserInfo> UserInfo { get; set; }
+	/// <summary>
+	/// Информация о пользователе
+	/// </summary>
+	public DbSet<UserInfo> UserInfo { get; set; } = null!;
 }
