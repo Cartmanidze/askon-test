@@ -1,5 +1,7 @@
 ﻿using askon_test_application.Users.Responses;
 using askon_test_domain.Users;
+using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
+using askon_test_infrastructure.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -22,17 +24,24 @@ public class LoginRequest : IRequest<LoginResponse>
 /// <inheritdoc />
 public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 {
+	private readonly IJwtGenerator _jwtGenerator;
+
 	private readonly SignInManager<User> _signInManager;
+
+	private readonly IUserInfoReadOnlyRepository _userInfoReadOnlyRepository;
 
 	private readonly UserManager<User> _userManager;
 
 	/// <summary>
 	/// .ctor
 	/// </summary>
-	public LoginRequestHandler(UserManager<User> userManager, SignInManager<User> signInManager)
+	public LoginRequestHandler(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator jwtGenerator,
+								IUserInfoReadOnlyRepository userInfoReadOnlyRepository)
 	{
 		_userManager = userManager;
 		_signInManager = signInManager;
+		_jwtGenerator = jwtGenerator;
+		_userInfoReadOnlyRepository = userInfoReadOnlyRepository;
 	}
 
 	/// <inheritdoc />
@@ -47,19 +56,19 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 
 		var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
-		if (result.Succeeded)
+		if (!result.Succeeded)
 		{
-			return new()
-			{
-				Email = user.Email,
-				FirstName = user.FirstName,
-				LastName = user.LastName,
-				MiddleName = user.MiddleName,
-				PhoneNumber = user.PhoneNumber,
-				NickName = user.UserName
-			};
+			throw new();
 		}
 
-		throw new();
+		var token = _jwtGenerator.CreateToken(user);
+
+		var userInfo = await _userInfoReadOnlyRepository.GetAsync(user.Id, cancellationToken);
+
+		return new()
+		{
+			Token = token,
+			NickName = userInfo.NickName
+		};
 	}
 }

@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\askon-test-domain\askon-test-domain.csproj" />
+		<ProjectReference Include="..\askon-test-infrastructure\askon-test-infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>
