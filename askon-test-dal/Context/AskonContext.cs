@@ -19,14 +19,6 @@ public class AskonContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 	public DbSet<UserInfo> UserInfo { get; set; } = null!;
 
 	/// <inheritdoc />
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		base.OnConfiguring(optionsBuilder);
-
-		optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=askon;Trusted_Connection=True;");
-	}
-
-	/// <inheritdoc />
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
 		base.OnModelCreating(builder);

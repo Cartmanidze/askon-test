@@ -23,7 +23,7 @@ public static class DataAccessLayerRegistration
 	{
 		void OptionsAction(DbContextOptionsBuilder builder) => builder.UseSqlServer(configuration.GetConnectionString("AskonConnection"));
 
-		services.AddDbContext<AskonContext>((Action<DbContextOptionsBuilder>) OptionsAction);
+		services.AddDbContext<AskonContext>((Action<DbContextOptionsBuilder>) OptionsAction, ServiceLifetime.Singleton);
 
 		services.AddPooledDbContextFactory<AskonContext>(OptionsAction);
 
