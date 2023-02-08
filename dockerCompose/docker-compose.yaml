@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  sql-server-db:
+    container_name: sql-server-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "7772:1433"
+    environment:
+      SA_PASSWORD: "12qwasZX"
+      ACCEPT_EULA: "Y"
+  askon-test:
+    image: lelique/askon-test
+    container_name: askin-test
+    environment:
+    - ConnectionStrings__DatabaseConnection=Server=sql-server-db;Database=askon;Trusted_Connection=True;
+    ports:
+    - "5180:5180"
+    - "5179:5179"
+    depends_on:
+    - sql-server-db
