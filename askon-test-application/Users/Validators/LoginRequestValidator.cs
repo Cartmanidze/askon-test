@@ -3,9 +3,7 @@ using FluentValidation;
 
 namespace askon_test_application.Users.Validators;
 
-/// <summary>
-/// Валидатор для запроса на логин
-/// </summary>
+/// <inheritdoc />
 public sealed class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
 	/// <inheritdoc />
