@@ -1,4 +1,6 @@
-﻿using MediatR;
+using askon_test_application.Behaviors;
+using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace askon_test_application;
@@ -13,6 +15,13 @@ public static class ApplicationLayerRegistration
 	/// </summary>
 	/// <param name="services"> Сервисы </param>
 	/// <returns> Сервисы </returns>
-	public static IServiceCollection AddApplicationLayerServices(this IServiceCollection services) =>
+	public static IServiceCollection AddApplicationLayerServices(this IServiceCollection services)
+	{
 		services.AddMediatR(typeof(ApplicationLayerRegistration).Assembly);
+		services.AddValidatorsFromAssembly(typeof(ApplicationLayerRegistration).Assembly);
+
+		services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+		return services;
+	}
 }
