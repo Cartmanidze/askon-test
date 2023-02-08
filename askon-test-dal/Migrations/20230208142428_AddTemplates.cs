@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace askon_test_dal.Migrations
 {
-    public partial class AddTemplates : Migration
+	/// <inheritdoc />
+	public partial class AddTemplates : Migration
     {
+		/// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -35,6 +37,7 @@ namespace askon_test_dal.Migrations
                 unique: true);
         }
 
+		/// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
