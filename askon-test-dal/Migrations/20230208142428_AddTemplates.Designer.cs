@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using askon_test_dal.Context;
 
@@ -11,9 +12,10 @@ using askon_test_dal.Context;
 namespace askon_test_dal.Migrations
 {
     [DbContext(typeof(AskonContext))]
-    partial class AskonContextModelSnapshot : ModelSnapshot
+    [Migration("20230208142428_AddTemplates")]
+    partial class AddTemplates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
