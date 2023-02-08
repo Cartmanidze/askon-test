@@ -59,6 +59,10 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 
 		oldUserInfo.User!.PhoneNumber = userInfo.User!.PhoneNumber;
 
+		oldUserInfo.User!.NormalizedUserName = !string.IsNullOrWhiteSpace(oldUserInfo.User?.Email)
+			? oldUserInfo.User!.Email.ToUpper()
+			: null;
+
 		return oldUserInfo;
 	}
 }
