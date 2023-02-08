@@ -1,6 +1,6 @@
 ﻿using askon_test_dal.Context;
+using askon_test_dal.Repositories.ReadOnly;
 using askon_test_domain.Users;
-using askon_test_domain.Users.Repositories.ReadOnly;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +36,8 @@ public static class DataAccessLayerRegistration
 			.AddSignInManager<SignInManager<User>>();
 
 		services.AddScoped<IUserInfoReadOnlyRepository, UserInfoReadOnlyRepository>();
+
+		services.AddScoped<IUsersReadOnlyRepository, UsersReadOnlyRepository>();
 
 		return services;
 	}

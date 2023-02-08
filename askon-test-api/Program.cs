@@ -62,4 +62,7 @@ app.UseApplyMigration();
 
 app.MapPost("/login", [AllowAnonymous](LoginRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
 
+app.MapPost("/register",
+	[AllowAnonymous](RegistrationRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
+
 app.Run();

@@ -30,5 +30,13 @@ public class AskonContext : DbContext
 			.HasOne(a => a.UserInfo)
 			.WithOne(a => a.User)
 			.HasForeignKey<UserInfo>(c => c.UserId);
+
+		builder.Entity<User>()
+			.Property(x => x.Id)
+			.ValueGeneratedOnAdd();
+
+		builder.Entity<UserInfo>()
+			.Property(x => x.Id)
+			.ValueGeneratedOnAdd();
 	}
 }
