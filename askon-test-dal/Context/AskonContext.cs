@@ -1,17 +1,20 @@
 ﻿using askon_test_domain.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace askon_test_dal.Context;
 
 /// <inheritdoc />
-public class AskonContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class AskonContext : DbContext
 {
 	/// <inheritdoc />
 	public AskonContext(DbContextOptions<AskonContext> options) : base(options)
 	{
 	}
+
+	/// <summary>
+	/// Пользователи
+	/// </summary>
+	public DbSet<User> Users { get; set; } = null!;
 
 	/// <summary>
 	/// Информация о пользователе
