@@ -2,6 +2,7 @@ using System.Text;
 using askon_test_api.Views;
 using askon_test_application;
 using askon_test_application.Profiles.Requests;
+using askon_test_application.Templates.Requests;
 using askon_test_application.Users.Requests;
 using askon_test_dal;
 using askon_test_infrastructure;
@@ -92,6 +93,13 @@ app.MapPut("/user/{nickName}", (string nickName, EditProfileView view, IMediator
 		FirstName = view.FirstName,
 		LastName = view.LastName,
 		MiddleName = view.MiddleName
+	}, token));
+
+app.MapPut("/user/{nickName}/template", (string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
+	mediator.Send(new EditTemplateRequest
+	{
+		NickName = nickName,
+		Html = view.Html
 	}, token));
 
 app.Run();

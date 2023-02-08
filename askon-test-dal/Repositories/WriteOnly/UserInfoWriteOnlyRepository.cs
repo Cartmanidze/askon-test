@@ -36,6 +36,11 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 
 		context.Users.Update(newUserInfo.User!);
 
+		if (newUserInfo.Template != null)
+		{
+			context.Templates.Update(newUserInfo.Template);
+		}
+
 		var result = await context.SaveChangesAsync(token);
 
 		return result;
@@ -62,6 +67,14 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 		oldUserInfo.User!.NormalizedUserName = !string.IsNullOrWhiteSpace(oldUserInfo.User?.Email)
 			? oldUserInfo.User!.Email.ToUpper()
 			: null;
+
+		if (oldUserInfo.Template != null)
+		{
+			oldUserInfo.Template.Html = userInfo.Template?.Html;
+		} else
+		{
+			oldUserInfo.Template = userInfo.Template;
+		}
 
 		return oldUserInfo;
 	}
