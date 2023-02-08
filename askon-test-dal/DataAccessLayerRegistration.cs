@@ -1,5 +1,9 @@
 ﻿using askon_test_dal.Context;
+using askon_test_dal.Repositories.ReadOnly;
+using askon_test_dal.Repositories.WriteOnly;
 using askon_test_domain.Users;
+using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
+using askon_test_domain.Users.Repositories.WriteOnly;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,8 +23,11 @@ public static class DataAccessLayerRegistration
 	/// <param name="configuration"> Конфигурация приложения </param>
 	public static IServiceCollection AddDalServices(this IServiceCollection services, IConfiguration configuration)
 	{
-		services.AddDbContext<AskonContext>(opt =>
-			opt.UseSqlServer(configuration.GetConnectionString("AskonConnection")));
+		void OptionsAction(DbContextOptionsBuilder builder) => builder.UseSqlServer(configuration.GetConnectionString("AskonConnection"));
+
+		services.AddDbContext<AskonContext>((Action<DbContextOptionsBuilder>) OptionsAction, ServiceLifetime.Singleton);
+
+		services.AddPooledDbContextFactory<AskonContext>(OptionsAction);
 
 		services.AddIdentity<User, IdentityRole<Guid>>(options =>
 			{
@@ -29,6 +36,12 @@ public static class DataAccessLayerRegistration
 			.AddEntityFrameworkStores<AskonContext>()
 			.AddDefaultTokenProviders()
 			.AddSignInManager<SignInManager<User>>();
+
+		services.AddScoped<IUserInfoReadOnlyRepository, UserInfoReadOnlyRepository>();
+
+		services.AddScoped<IUsersReadOnlyRepository, UsersReadOnlyRepository>();
+
+		services.AddScoped<IUserInfoWriteOnlyRepository, UserInfoWriteOnlyRepository>();
 
 		return services;
 	}

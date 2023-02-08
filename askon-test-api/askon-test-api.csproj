@@ -10,12 +10,14 @@
     </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\askon-test-application\askon-test-application.csproj" />
 	  <ProjectReference Include="..\askon-test-dal\askon-test-dal.csproj" />
+	  <ProjectReference Include="..\askon-test-infrastructure\askon-test-infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

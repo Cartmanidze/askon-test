@@ -1,9 +1,9 @@
-﻿namespace askon_test_application.Users.Models;
+﻿namespace askon_test_api.Views;
 
 /// <summary>
-/// Профиль пользователя
+/// Представление для редактирования профиля
 /// </summary>
-public class Profile
+public class EditProfileView
 {
 	/// <summary>
 	/// Эл.почта
@@ -18,12 +18,12 @@ public class Profile
 	/// <summary>
 	/// Фамилия
 	/// </summary>
-	public string LastName { get; set; } = null!;
+	public string? LastName { get; set; }
 
 	/// <summary>
 	/// Имя
 	/// </summary>
-	public string FirstName { get; set; } = null!;
+	public string? FirstName { get; set; }
 
 	/// <summary>
 	/// Отчество
@@ -34,11 +34,6 @@ public class Profile
 	/// Путь к изображению профиля
 	/// </summary>
 	public string? Avatar { get; set; }
-
-	/// <summary>
-	/// Псевдоним
-	/// </summary>
-	public string NickName { get; set; } = null!;
 
 	/// <summary>
 	/// Описание профиля

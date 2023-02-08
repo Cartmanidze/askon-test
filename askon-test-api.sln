@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "askon-test-application", "askon-test-application\askon-test-application.csproj", "{62C6F4E2-8433-4248-AB61-2DA08A7298DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "askon-test-infrastructure", "askon-test-infrastructure\askon-test-infrastructure.csproj", "{5F303973-D091-4970-AF0D-F34C627E1A5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{62C6F4E2-8433-4248-AB61-2DA08A7298DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62C6F4E2-8433-4248-AB61-2DA08A7298DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62C6F4E2-8433-4248-AB61-2DA08A7298DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F303973-D091-4970-AF0D-F34C627E1A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F303973-D091-4970-AF0D-F34C627E1A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F303973-D091-4970-AF0D-F34C627E1A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F303973-D091-4970-AF0D-F34C627E1A5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02B17E58-4C61-4B53-9181-28D4209A69A8} = {37C1E155-4A1F-46E2-B25D-ABC70F64692E}
@@ -60,5 +66,6 @@ Global
 		{F4E0B485-387D-4053-9C8D-EEB026AF0CD7} = {96A51B38-5274-4BD2-A1CD-3517D4F6E234}
 		{FBB3CDD8-F887-472C-9D06-5287D2BDF786} = {BEE28B02-0CA1-49E4-B6D6-40119E79CE80}
 		{62C6F4E2-8433-4248-AB61-2DA08A7298DF} = {289B8D58-745F-455A-BB50-33A25054DD3F}
+		{5F303973-D091-4970-AF0D-F34C627E1A5C} = {187B3158-EB65-4893-BA8B-1861AA5C0AFD}
 	EndGlobalSection
 EndGlobal

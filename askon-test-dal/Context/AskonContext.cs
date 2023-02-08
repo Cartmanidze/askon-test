@@ -1,12 +1,10 @@
 ﻿using askon_test_domain.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace askon_test_dal.Context;
 
 /// <inheritdoc />
-public class AskonContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class AskonContext : DbContext
 {
 	/// <inheritdoc />
 	public AskonContext(DbContextOptions<AskonContext> options) : base(options)
@@ -14,17 +12,14 @@ public class AskonContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 	}
 
 	/// <summary>
+	/// Пользователи
+	/// </summary>
+	public DbSet<User> Users { get; set; } = null!;
+
+	/// <summary>
 	/// Информация о пользователе
 	/// </summary>
 	public DbSet<UserInfo> UserInfo { get; set; } = null!;
-
-	/// <inheritdoc />
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		base.OnConfiguring(optionsBuilder);
-
-		optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=askon;Trusted_Connection=True;");
-	}
 
 	/// <inheritdoc />
 	protected override void OnModelCreating(ModelBuilder builder)
@@ -35,5 +30,13 @@ public class AskonContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 			.HasOne(a => a.UserInfo)
 			.WithOne(a => a.User)
 			.HasForeignKey<UserInfo>(c => c.UserId);
+
+		builder.Entity<User>()
+			.Property(x => x.Id)
+			.ValueGeneratedOnAdd();
+
+		builder.Entity<UserInfo>()
+			.Property(x => x.Id)
+			.ValueGeneratedOnAdd();
 	}
 }

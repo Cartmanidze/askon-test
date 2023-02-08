@@ -20,12 +20,12 @@ public class User : IdentityUser<Guid>
 	/// <summary>
 	/// Фамилия
 	/// </summary>
-	public string LastName { get; set; } = null!;
+	public string? LastName { get; set; }
 
 	/// <summary>
 	/// Имя
 	/// </summary>
-	public string FirstName { get; set; } = null!;
+	public string? FirstName { get; set; }
 
 	/// <summary>
 	/// Отчество

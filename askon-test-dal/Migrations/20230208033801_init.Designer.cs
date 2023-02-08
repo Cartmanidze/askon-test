@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using askon_test_dal.Context;
 
@@ -10,10 +11,13 @@ using askon_test_dal.Context;
 
 namespace askon_test_dal.Migrations
 {
+	/// <inheritdoc />
     [DbContext(typeof(AskonContext))]
-    partial class AskonContextModelSnapshot : ModelSnapshot
+    [Migration("20230208033801_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+		/// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +45,11 @@ namespace askon_test_dal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
