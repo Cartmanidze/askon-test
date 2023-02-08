@@ -1,4 +1,6 @@
-﻿namespace askon_test_domain.Users;
+﻿using askon_test_domain.Templates;
+
+namespace askon_test_domain.Users;
 
 /// <summary>
 /// Информация о пользователе
@@ -34,4 +36,9 @@ public class UserInfo
 	/// Пользователь
 	/// </summary>
 	public User? User { get; set; }
+
+	/// <summary>
+	/// Шаблон
+	/// </summary>
+	public Template? Template { get; set; }
 }

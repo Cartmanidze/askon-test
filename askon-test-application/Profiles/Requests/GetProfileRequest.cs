@@ -40,7 +40,8 @@ public class GetProfileRequestHandler : IRequestHandler<GetProfileRequest, GetPr
 			FirstName = userInfo.User.FirstName,
 			MiddleName = userInfo.User.MiddleName,
 			Description = userInfo.Description,
-			NickName = userInfo.NickName
+			NickName = userInfo.NickName,
+			Html = userInfo.Template!.Html
 		};
 	}
 }
