@@ -12,9 +12,9 @@ services:
     image: lelique/askon-test
     container_name: askin-test
     environment:
-    - ConnectionStrings__DatabaseConnection=Server=sql-server-db;Database=askon;Trusted_Connection=True;
+    - ConnectionStrings__AskonConnection=Server=sql-server-db;Database=askon;User Id=sa;Password=12qwasZX;
     ports:
-    - "5180:5180"
-    - "5179:5179"
+    - "5180:443"
+    - "5179:80"
     depends_on:
     - sql-server-db
