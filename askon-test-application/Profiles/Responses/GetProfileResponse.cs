@@ -1,9 +1,9 @@
-﻿namespace askon_test_application.Users.Models;
+﻿namespace askon_test_application.Profiles.Responses;
 
 /// <summary>
-/// Профиль пользователя
+/// Ответ на получение профиля
 /// </summary>
-public class Profile
+public class GetProfileResponse
 {
 	/// <summary>
 	/// Эл.почта
@@ -18,12 +18,12 @@ public class Profile
 	/// <summary>
 	/// Фамилия
 	/// </summary>
-	public string LastName { get; set; } = null!;
+	public string? LastName { get; set; }
 
 	/// <summary>
 	/// Имя
 	/// </summary>
-	public string FirstName { get; set; } = null!;
+	public string? FirstName { get; set; }
 
 	/// <summary>
 	/// Отчество

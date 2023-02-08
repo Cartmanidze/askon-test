@@ -1,5 +1,6 @@
 using System.Text;
 using askon_test_application;
+using askon_test_application.Profiles.Requests;
 using askon_test_application.Users.Requests;
 using askon_test_dal;
 using askon_test_infrastructure;
@@ -64,5 +65,10 @@ app.MapPost("/login", [AllowAnonymous](LoginRequest request, IMediator mediator,
 
 app.MapPost("/register",
 	[AllowAnonymous](RegistrationRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
+
+app.MapGet("/user/{nickName}", (string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetProfileRequest
+{
+	NickName = nickName
+}, token));
 
 app.Run();
