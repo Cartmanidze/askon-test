@@ -1,7 +1,9 @@
 ﻿using askon_test_dal.Context;
 using askon_test_dal.Repositories.ReadOnly;
+using askon_test_dal.Repositories.WriteOnly;
 using askon_test_domain.Users;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
+using askon_test_domain.Users.Repositories.WriteOnly;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +40,8 @@ public static class DataAccessLayerRegistration
 		services.AddScoped<IUserInfoReadOnlyRepository, UserInfoReadOnlyRepository>();
 
 		services.AddScoped<IUsersReadOnlyRepository, UsersReadOnlyRepository>();
+
+		services.AddScoped<IUserInfoWriteOnlyRepository, UserInfoWriteOnlyRepository>();
 
 		return services;
 	}

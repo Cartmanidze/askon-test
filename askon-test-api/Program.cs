@@ -1,4 +1,5 @@
 using System.Text;
+using askon_test_api.Views;
 using askon_test_application;
 using askon_test_application.Profiles.Requests;
 using askon_test_application.Users.Requests;
@@ -70,5 +71,18 @@ app.MapGet("/user/{nickName}", (string nickName, IMediator mediator, Cancellatio
 {
 	NickName = nickName
 }, token));
+
+app.MapPut("/user/{nickName}", (string nickName, EditProfileView view, IMediator mediator, CancellationToken token) => mediator.Send(
+	new EditProfileRequest
+	{
+		NickName = nickName,
+		Email = view.Email,
+		PhoneNumber = view.PhoneNumber,
+		Avatar = view.Avatar,
+		Description = view.Description,
+		FirstName = view.FirstName,
+		LastName = view.LastName,
+		MiddleName = view.MiddleName
+	}, token));
 
 app.Run();

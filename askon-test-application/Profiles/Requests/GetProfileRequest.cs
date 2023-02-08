@@ -33,7 +33,7 @@ public class GetProfileRequestHandler : IRequestHandler<GetProfileRequest, GetPr
 
 		return new()
 		{
-			Email = userInfo.User!.Email,
+			Email = userInfo!.User!.Email,
 			Avatar = userInfo.Avatar,
 			PhoneNumber = userInfo.User.PhoneNumber,
 			LastName = userInfo.User.LastName,
