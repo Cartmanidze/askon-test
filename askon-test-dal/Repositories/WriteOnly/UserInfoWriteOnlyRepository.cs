@@ -34,7 +34,7 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 
 		context.UserInfo.Update(newUserInfo);
 
-		context.Users.Update(newUserInfo.User);
+		context.Users.Update(newUserInfo.User!);
 
 		var result = await context.SaveChangesAsync(token);
 
@@ -43,7 +43,7 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 
 	private static UserInfo Update(UserInfo userInfo, UserInfo? oldUserInfo)
 	{
-		oldUserInfo.Description = userInfo.Description;
+		oldUserInfo!.Description = userInfo.Description;
 
 		oldUserInfo.Avatar = userInfo.Avatar;
 
