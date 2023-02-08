@@ -16,8 +16,8 @@ public interface IUserInfoReadOnlyRepository
 	/// <summary>
 	/// Получение информации о пользователе
 	/// </summary>
-	/// <param name="ickName"> Ник пользователя </param>
+	/// <param name="nickName"> Ник пользователя </param>
 	/// <param name="token"> Токен отмены </param>
 	/// <returns> Информация о пользователе </returns>
-	Task<UserInfo> GetAsync(string nickName, CancellationToken token);
+	Task<UserInfo?> GetAsync(string nickName, CancellationToken token);
 }

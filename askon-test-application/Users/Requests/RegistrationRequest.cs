@@ -30,6 +30,8 @@ public class RegistrationRequest : IRequest<RegistrationResponse>
 /// <inheritdoc />
 public class RegistrationRequestHandler : IRequestHandler<RegistrationRequest, RegistrationResponse>
 {
+	private readonly IUserInfoReadOnlyRepository _userInfoReadOnlyRepository;
+
 	private readonly UserManager<User> _userManager;
 
 	private readonly IUsersReadOnlyRepository _usersReadOnlyRepository;
@@ -37,10 +39,12 @@ public class RegistrationRequestHandler : IRequestHandler<RegistrationRequest, R
 	/// <summary>
 	/// .ctor
 	/// </summary>
-	public RegistrationRequestHandler(IUsersReadOnlyRepository usersReadOnlyRepository, UserManager<User> userManager)
+	public RegistrationRequestHandler(IUsersReadOnlyRepository usersReadOnlyRepository, UserManager<User> userManager,
+									IUserInfoReadOnlyRepository userInfoReadOnlyRepository)
 	{
 		_usersReadOnlyRepository = usersReadOnlyRepository;
 		_userManager = userManager;
+		_userInfoReadOnlyRepository = userInfoReadOnlyRepository;
 	}
 
 	/// <inheritdoc />
@@ -51,6 +55,13 @@ public class RegistrationRequestHandler : IRequestHandler<RegistrationRequest, R
 		if (oldUser != null)
 		{
 			throw new($"Пользователь с логином = {request.Login} уже существует");
+		}
+
+		var oldUserInfo = await _userInfoReadOnlyRepository.GetAsync(request.NickName, cancellationToken);
+
+		if (oldUserInfo != null)
+		{
+			throw new($"Пользователь с ником = {request.NickName} уже существует");
 		}
 
 		var newUser = new User

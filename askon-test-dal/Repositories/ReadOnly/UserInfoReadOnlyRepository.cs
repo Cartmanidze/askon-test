@@ -27,13 +27,13 @@ public class UserInfoReadOnlyRepository : IUserInfoReadOnlyRepository
 	}
 
 	/// <inheritdoc />
-	public async Task<UserInfo> GetAsync(string nickName, CancellationToken token)
+	public async Task<UserInfo?> GetAsync(string nickName, CancellationToken token)
 	{
 		await using var context = await _contextFactory.CreateDbContextAsync(token);
 
 		var userInfo = await context.UserInfo.AsNoTracking()
 			.Include(x => x.User)
-			.FirstAsync(x => x.NickName == nickName, token);
+			.SingleOrDefaultAsync(x => x.NickName == nickName, token);
 
 		return userInfo;
 	}
