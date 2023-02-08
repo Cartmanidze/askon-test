@@ -32,6 +32,7 @@ public class UserInfoReadOnlyRepository : IUserInfoReadOnlyRepository
 		await using var context = await _contextFactory.CreateDbContextAsync(token);
 
 		var userInfo = await context.UserInfo.AsNoTracking()
+			.Include(x => x.Template)
 			.Include(x => x.User)
 			.SingleOrDefaultAsync(x => x.NickName == nickName, token);
 

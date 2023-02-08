@@ -44,4 +44,9 @@ public class GetProfileResponse
 	/// Описание профиля
 	/// </summary>
 	public string? Description { get; set; }
+
+	/// <summary>
+	/// Html шаблон
+	/// </summary>
+	public string? Html { get; set; }
 }
