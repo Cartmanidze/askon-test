@@ -1,5 +1,6 @@
 ﻿using askon_test_application.Profiles.Responses;
 using askon_test_domain.Users;
+using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using askon_test_domain.Users.Repositories.WriteOnly;
 using MediatR;
 
@@ -56,36 +57,29 @@ public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, Get
 {
 	private readonly IMediator _mediator;
 
+	private readonly IUserInfoReadOnlyRepository _userInfoReadOnlyRepository;
+
 	private readonly IUserInfoWriteOnlyRepository _userInfoWriteOnlyRepository;
 
 	/// <summary>
 	/// .ctor
 	/// </summary>
-	public EditProfileRequestHandler(IUserInfoWriteOnlyRepository userInfoWriteOnlyRepository, IMediator mediator)
+	public EditProfileRequestHandler(IUserInfoWriteOnlyRepository userInfoWriteOnlyRepository, IMediator mediator,
+									IUserInfoReadOnlyRepository userInfoReadOnlyRepository)
 	{
 		_userInfoWriteOnlyRepository = userInfoWriteOnlyRepository;
 		_mediator = mediator;
+		_userInfoReadOnlyRepository = userInfoReadOnlyRepository;
 	}
 
 	/// <inheritdoc />
 	public async Task<GetProfileResponse> Handle(EditProfileRequest request, CancellationToken cancellationToken)
 	{
-		var userInfo = new UserInfo
-		{
-			Avatar = request.Avatar,
-			Description = request.Description,
-			NickName = request.NickName,
-			User = new()
-			{
-				Email = request.Email,
-				PhoneNumber = request.PhoneNumber,
-				FirstName = request.FirstName,
-				LastName = request.LastName,
-				MiddleName = request.MiddleName
-			}
-		};
+		var userInfo = await _userInfoReadOnlyRepository.GetAsync(request.NickName, cancellationToken);
 
-		await _userInfoWriteOnlyRepository.SaveAsync(userInfo, cancellationToken);
+		var updatedUserInfo = Update(request, userInfo!);
+
+		await _userInfoWriteOnlyRepository.SaveAsync(updatedUserInfo, cancellationToken);
 
 		var result = await _mediator.Send(new GetProfileRequest
 		{
@@ -93,5 +87,28 @@ public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, Get
 		}, cancellationToken);
 
 		return result;
+	}
+
+	private static UserInfo Update(EditProfileRequest request, UserInfo oldUserInfo)
+	{
+		oldUserInfo.Description = request.Description;
+
+		oldUserInfo.Avatar = request.Avatar;
+
+		oldUserInfo.User!.FirstName = request.FirstName;
+
+		oldUserInfo.User.MiddleName = request.MiddleName;
+
+		oldUserInfo.User.LastName = request.LastName;
+
+		oldUserInfo.User.Email = request.Email;
+
+		oldUserInfo.User.PhoneNumber = request.PhoneNumber;
+
+		oldUserInfo.User.NormalizedUserName = !string.IsNullOrWhiteSpace(request.Email)
+			? request.Email.ToUpper()
+			: null;
+
+		return oldUserInfo;
 	}
 }

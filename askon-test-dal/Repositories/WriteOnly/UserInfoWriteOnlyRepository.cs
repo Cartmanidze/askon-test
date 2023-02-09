@@ -1,6 +1,5 @@
 ﻿using askon_test_dal.Context;
 using askon_test_domain.Users;
-using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using askon_test_domain.Users.Repositories.WriteOnly;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,71 +10,27 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 {
 	private readonly IDbContextFactory<AskonContext> _contextFactory;
 
-	private readonly IUserInfoReadOnlyRepository _userInfoReadOnlyRepository;
-
 	/// <summary>
 	/// .ctor
 	/// </summary>
-	public UserInfoWriteOnlyRepository(IDbContextFactory<AskonContext> contextFactory,
-										IUserInfoReadOnlyRepository userInfoReadOnlyRepository)
-	{
-		_contextFactory = contextFactory;
-		_userInfoReadOnlyRepository = userInfoReadOnlyRepository;
-	}
+	public UserInfoWriteOnlyRepository(IDbContextFactory<AskonContext> contextFactory) => _contextFactory = contextFactory;
 
 	/// <inheritdoc />
 	public async Task<int> SaveAsync(UserInfo userInfo, CancellationToken token)
 	{
-		var oldUserInfo = await _userInfoReadOnlyRepository.GetAsync(userInfo.NickName, token);
-
 		await using var context = await _contextFactory.CreateDbContextAsync(token);
 
-		var newUserInfo = Update(userInfo, oldUserInfo);
+		context.UserInfo.Update(userInfo);
 
-		context.UserInfo.Update(newUserInfo);
+		context.Users.Update(userInfo.User!);
 
-		context.Users.Update(newUserInfo.User!);
-
-		if (newUserInfo.Template != null)
+		if (userInfo.Template != null)
 		{
-			context.Templates.Update(newUserInfo.Template);
+			context.Templates.Update(userInfo.Template);
 		}
 
 		var result = await context.SaveChangesAsync(token);
 
 		return result;
-	}
-
-	private static UserInfo Update(UserInfo userInfo, UserInfo? oldUserInfo)
-	{
-		oldUserInfo!.Description = userInfo.Description;
-
-		oldUserInfo.Avatar = userInfo.Avatar;
-
-		oldUserInfo.NickName = userInfo.NickName;
-
-		oldUserInfo.User!.FirstName = userInfo.User!.FirstName;
-
-		oldUserInfo.User!.MiddleName = userInfo.User!.MiddleName;
-
-		oldUserInfo.User!.LastName = userInfo.User!.LastName;
-
-		oldUserInfo.User!.Email = userInfo.User!.Email;
-
-		oldUserInfo.User!.PhoneNumber = userInfo.User!.PhoneNumber;
-
-		oldUserInfo.User!.NormalizedUserName = !string.IsNullOrWhiteSpace(oldUserInfo.User?.Email)
-			? oldUserInfo.User!.Email.ToUpper()
-			: null;
-
-		if (oldUserInfo.Template != null)
-		{
-			oldUserInfo.Template.Html = userInfo.Template?.Html;
-		} else
-		{
-			oldUserInfo.Template = userInfo.Template;
-		}
-
-		return oldUserInfo;
 	}
 }
