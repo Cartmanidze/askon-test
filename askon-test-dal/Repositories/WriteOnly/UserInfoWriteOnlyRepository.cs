@@ -20,14 +20,20 @@ public class UserInfoWriteOnlyRepository : IUserInfoWriteOnlyRepository
 	{
 		await using var context = await _contextFactory.CreateDbContextAsync(token);
 
+		if (userInfo.Template != null)
+		{
+			if (userInfo.Template.Id == Guid.Empty)
+			{
+				await context.Templates.AddAsync(userInfo.Template, token);
+			} else
+			{
+				context.Templates.Update(userInfo.Template);
+			}
+		}
+
 		context.UserInfo.Update(userInfo);
 
 		context.Users.Update(userInfo.User!);
-
-		if (userInfo.Template != null)
-		{
-			context.Templates.Update(userInfo.Template);
-		}
 
 		var result = await context.SaveChangesAsync(token);
 
