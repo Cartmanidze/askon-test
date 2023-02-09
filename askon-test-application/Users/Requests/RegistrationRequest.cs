@@ -1,4 +1,4 @@
-﻿using askon_test_application.Users.Responses;
+using askon_test_application.Users.Responses;
 using askon_test_domain.Users;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using MediatR;
@@ -9,7 +9,7 @@ namespace askon_test_application.Users.Requests;
 /// <summary>
 /// Запрос на регистрацию
 /// </summary>
-public class RegistrationRequest : IRequest<RegistrationResponse>
+public record RegistrationRequest : IRequest<RegistrationResponse>
 {
 	/// <summary>
 	/// Логин

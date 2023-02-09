@@ -1,4 +1,5 @@
 using System.Text;
+using askon_test_api.Middleware;
 using askon_test_api.Views;
 using askon_test_application;
 using askon_test_application.Profiles.Requests;
@@ -49,6 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDalServices(builder.Configuration);
 
 builder.Services.AddApplicationLayerServices();
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -61,6 +63,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseApplyMigration();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapPost("/login", [AllowAnonymous](LoginRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
 

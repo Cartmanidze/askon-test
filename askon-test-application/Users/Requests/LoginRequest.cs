@@ -1,4 +1,4 @@
-﻿using askon_test_application.Users.Responses;
+using askon_test_application.Users.Responses;
 using askon_test_domain.Users;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using askon_test_infrastructure.Services.Interfaces;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 namespace askon_test_application.Users.Requests;
 
 /// <inheritdoc />
-public class LoginRequest : IRequest<LoginResponse>
+public record LoginRequest : IRequest<LoginResponse>
 {
 	/// <summary>
 	/// Эл.почта
