@@ -34,7 +34,6 @@ builder.Services.AddMvc(option =>
 
 	var policy = new AuthorizationPolicyBuilder()
 		.RequireAuthenticatedUser()
-		.RequireAuthenticatedUser()
 		.Build();
 
 	option.Filters.Add(new AuthorizeFilter(policy));
