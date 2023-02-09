@@ -91,46 +91,43 @@ public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, Get
 
 	private static UserInfo Update(EditProfileRequest request, UserInfo oldUserInfo)
 	{
-		if (request.Description == null)
+		if (request.Description != null)
 		{
 			oldUserInfo.Description = request.Description;
 		}
 
-		if (request.Avatar == null)
+		if (request.Avatar != null)
 		{
 			oldUserInfo.Avatar = request.Avatar;
 		}
 
-		if (request.FirstName == null)
+		if (request.FirstName != null)
 		{
 			oldUserInfo.User!.FirstName = request.FirstName;
 		}
 
-		if (request.MiddleName == null)
+		if (request.MiddleName != null)
 		{
 			oldUserInfo.User!.MiddleName = request.MiddleName;
 		}
 
-		if (request.LastName == null)
+		if (request.LastName != null)
 		{
 			oldUserInfo.User!.LastName = request.LastName;
 		}
 
-		if (request.Email == null)
+		if (request.Email != null)
 		{
 			oldUserInfo.User!.Email = request.Email;
-		}
 
-		if (request.PhoneNumber == null)
-		{
-			oldUserInfo.User!.PhoneNumber = request.PhoneNumber;
-		}
-
-		if (request.Email == null)
-		{
 			oldUserInfo.User!.NormalizedUserName = !string.IsNullOrWhiteSpace(request.Email)
 				? request.Email.ToUpper()
 				: null;
+		}
+
+		if (request.PhoneNumber != null)
+		{
+			oldUserInfo.User!.PhoneNumber = request.PhoneNumber;
 		}
 
 		return oldUserInfo;
