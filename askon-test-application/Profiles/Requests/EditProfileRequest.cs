@@ -91,23 +91,47 @@ public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, Get
 
 	private static UserInfo Update(EditProfileRequest request, UserInfo oldUserInfo)
 	{
-		oldUserInfo.Description = request.Description;
+		if (request.Description == null)
+		{
+			oldUserInfo.Description = request.Description;
+		}
 
-		oldUserInfo.Avatar = request.Avatar;
+		if (request.Avatar == null)
+		{
+			oldUserInfo.Avatar = request.Avatar;
+		}
 
-		oldUserInfo.User!.FirstName = request.FirstName;
+		if (request.FirstName == null)
+		{
+			oldUserInfo.User!.FirstName = request.FirstName;
+		}
 
-		oldUserInfo.User.MiddleName = request.MiddleName;
+		if (request.MiddleName == null)
+		{
+			oldUserInfo.User!.MiddleName = request.MiddleName;
+		}
 
-		oldUserInfo.User.LastName = request.LastName;
+		if (request.LastName == null)
+		{
+			oldUserInfo.User!.LastName = request.LastName;
+		}
 
-		oldUserInfo.User.Email = request.Email;
+		if (request.Email == null)
+		{
+			oldUserInfo.User!.Email = request.Email;
+		}
 
-		oldUserInfo.User.PhoneNumber = request.PhoneNumber;
+		if (request.PhoneNumber == null)
+		{
+			oldUserInfo.User!.PhoneNumber = request.PhoneNumber;
+		}
 
-		oldUserInfo.User.NormalizedUserName = !string.IsNullOrWhiteSpace(request.Email)
-			? request.Email.ToUpper()
-			: null;
+		if (request.Email == null)
+		{
+			oldUserInfo.User!.NormalizedUserName = !string.IsNullOrWhiteSpace(request.Email)
+				? request.Email.ToUpper()
+				: null;
+		}
 
 		return oldUserInfo;
 	}
