@@ -7,10 +7,10 @@ namespace askon_test_dal.Context;
 /// <inheritdoc />
 public class AskonContext : DbContext
 {
-	// /// <inheritdoc />
-	// public AskonContext(DbContextOptions<AskonContext> options) : base(options)
-	// {
-	// }
+	/// <inheritdoc />
+	public AskonContext(DbContextOptions<AskonContext> options) : base(options)
+	{
+	}
 
 	/// <summary>
 	/// Пользователи
@@ -53,12 +53,5 @@ public class AskonContext : DbContext
 		builder.Entity<Template>()
 			.Property(x => x.Id)
 			.ValueGeneratedOnAdd();
-	}
-
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		base.OnConfiguring(optionsBuilder);
-
-		optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=askon;Trusted_Connection=True;");
 	}
 }

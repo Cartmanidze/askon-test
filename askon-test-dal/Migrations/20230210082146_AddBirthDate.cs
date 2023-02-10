@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace askon_test_dal.Migrations
 {
-    public partial class AddBirthDate : Migration
+	/// <inheritdoc />
+	public partial class AddBirthDate : Migration
     {
+		/// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<DateTime>(
@@ -16,6 +18,7 @@ namespace askon_test_dal.Migrations
                 nullable: true);
         }
 
+		/// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

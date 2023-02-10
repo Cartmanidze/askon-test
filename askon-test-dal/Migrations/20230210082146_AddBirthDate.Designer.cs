@@ -11,10 +11,12 @@ using askon_test_dal.Context;
 
 namespace askon_test_dal.Migrations
 {
+	/// <inheritdoc />
     [DbContext(typeof(AskonContext))]
     [Migration("20230210082146_AddBirthDate")]
     partial class AddBirthDate
     {
+		/// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
