@@ -1,47 +1,24 @@
-using MediatR;
 using FluentValidation;
-using System.Threading;
-using System.Threading.Tasks;
-using ValidationException = askon_test_application.Exception.ValidationException;
+using MediatR;
 
-namespace askon_test_application.Behaviors
+namespace askon_test_application.Behaviors;
+
+/// <inheritdoc />
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+	where TRequest : IRequest<TResponse>
 {
-	public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-		where TRequest : class, IRequest<TResponse>
+	private readonly IValidator<TRequest> _validator;
+
+	/// <summary>
+	/// .ctor
+	/// </summary>
+	public ValidationBehavior(IValidator<TRequest> validator) => _validator = validator;
+
+	/// <inheritdoc />
+	public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
 	{
-		private readonly IEnumerable<IValidator<TRequest>> _validators;
+		_validator.ValidateAndThrow(request);
 
-		public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators) => _validators = validators;
-
-		public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-		{
-			if (!_validators.Any())
-			{
-				return await next();
-			}
-
-			var context = new ValidationContext<TRequest>(request);
-
-			var errorsDictionary = _validators
-				.Select(x => x.Validate(context))
-				.SelectMany(x => x.Errors)
-				.Where(x => x != null)
-				.GroupBy(
-					x => x.PropertyName,
-					x => x.ErrorMessage,
-					(propertyName, errorMessages) => new
-					{
-						Key = propertyName,
-						Values = errorMessages.Distinct().ToArray()
-					})
-				.ToDictionary(x => x.Key, x => x.Values);
-
-			if (errorsDictionary.Any())
-			{
-				throw new ValidationException(errorsDictionary);
-			}
-
-			return await next();
-		}
+		return next();
 	}
 }

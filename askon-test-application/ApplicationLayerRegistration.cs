@@ -18,7 +18,8 @@ public static class ApplicationLayerRegistration
 	public static IServiceCollection AddApplicationLayerServices(this IServiceCollection services)
 	{
 		services.AddMediatR(typeof(ApplicationLayerRegistration).Assembly);
-		services.AddValidatorsFromAssembly(typeof(ApplicationLayerRegistration).Assembly, includeInternalTypes: true);
+
+		services.AddValidatorsFromAssembly(typeof(ApplicationLayerRegistration).Assembly);
 
 		services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
