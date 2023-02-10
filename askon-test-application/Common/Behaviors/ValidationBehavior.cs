@@ -2,7 +2,7 @@ using FluentValidation;
 using MediatR;
 using ValidationException = askon_test_domain.Exceptions.ValidationException;
 
-namespace askon_test_application.Behaviors;
+namespace askon_test_application.Common.Behaviors;
 
 /// <inheritdoc />
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>

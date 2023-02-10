@@ -1,4 +1,4 @@
-using askon_test_application.Behaviors;
+using askon_test_application.Common.Behaviors;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
