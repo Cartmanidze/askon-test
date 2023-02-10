@@ -13,9 +13,9 @@ namespace askon_test_application.Users.Requests;
 public record LoginRequest : IRequest<LoginResponse>
 {
 	/// <summary>
-	/// Эл.почта
+	/// Логин
 	/// </summary>
-	public string Email { get; set; } = null!;
+	public string Login { get; set; } = null!;
 
 	/// <summary>
 	/// Пароль
@@ -28,13 +28,13 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 {
 	private readonly IJwtGenerator _jwtGenerator;
 
+	private readonly ILogger<LoginRequestHandler> _logger;
+
 	private readonly SignInManager<User> _signInManager;
 
 	private readonly IUserInfoReadOnlyRepository _userInfoReadOnlyRepository;
 
 	private readonly UserManager<User> _userManager;
-
-	private readonly ILogger<LoginRequestHandler> _logger;
 
 	/// <summary>
 	/// .ctor
@@ -54,11 +54,13 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 	{
 		_logger.LogInformation("LoginRequest started");
 
-		var user = await _userManager.FindByEmailAsync(request.Email);
+		var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
+
+		var user = await _userManager.FindByLoginAsync(request.Login, loginInfo.ProviderKey);
 
 		if (user == null)
 		{
-			throw new UserNotFoundException(request.Email);
+			throw new UserNotFoundException(request.Login);
 		}
 
 		var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);

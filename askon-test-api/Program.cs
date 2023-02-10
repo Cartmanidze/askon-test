@@ -75,10 +75,19 @@ app.UseApplyMigration();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.MapPost("/login", [AllowAnonymous](LoginRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
+app.MapPost("/login", [AllowAnonymous](LoginView view, IMediator mediator, CancellationToken token) => mediator.Send(new LoginRequest
+{
+	Login = view.Login,
+	Password = view.Password
+}, token));
 
 app.MapPost("/register",
-	[AllowAnonymous](RegistrationRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
+	[AllowAnonymous](RegistrationView view, IMediator mediator, CancellationToken token) => mediator.Send(new RegistrationRequest
+	{
+		Login = view.Login,
+		NickName = view.NickName,
+		Password = view.Password
+	}, token));
 
 app.MapGet("/user/{nickName}", (string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetProfileRequest
 {

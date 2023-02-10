@@ -6,9 +6,9 @@
 public class LoginView
 {
 	/// <summary>
-	/// Эл.почта
+	/// Логин
 	/// </summary>
-	public string Email { get; set; } = null!;
+	public string Login { get; set; } = null!;
 
 	/// <summary>
 	/// Пароль

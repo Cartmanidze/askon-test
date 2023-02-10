@@ -11,7 +11,7 @@ internal sealed class LoginRequestValidator : AbstractValidator<LoginRequest>
 	/// <inheritdoc />
 	public LoginRequestValidator()
 	{
-		RuleFor(x => x.Email)
+		RuleFor(x => x.Login)
 			.NotEmpty();
 
 		RuleFor(x => x.Password)
