@@ -9,16 +9,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MediatR" Version="11.1.0"/>
-		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2"/>
-		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
-		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0"/>
-		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0"/>
+		<PackageReference Include="HtmlRenderer.PdfSharp" Version="1.5.0.6" />
+		<PackageReference Include="MediatR" Version="11.1.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\askon-test-domain\askon-test-domain.csproj"/>
-		<ProjectReference Include="..\askon-test-infrastructure\askon-test-infrastructure.csproj"/>
+		<ProjectReference Include="..\askon-test-domain\askon-test-domain.csproj" />
+		<ProjectReference Include="..\askon-test-infrastructure\askon-test-infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
 using System.Text.Json;
-using askon_test_application.Exception;
 using askon_test_domain.Exceptions;
 using ApplicationException = askon_test_domain.Exceptions.ApplicationException;
 

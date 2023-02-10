@@ -1,6 +1,4 @@
-using ApplicationException = askon_test_domain.Exceptions.ApplicationException;
-
-namespace askon_test_application.Exception;
+namespace askon_test_domain.Exceptions;
 
 /// <inheritdoc />
 public sealed class ValidationException : ApplicationException

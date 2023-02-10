@@ -115,4 +115,7 @@ app.MapPut("/user/{nickName}/template", (string nickName, EditTemplateView view,
 		Html = view.Html
 	}, token));
 
+app.MapGet("/user/{nickName}/pdf",
+	(string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetPdfTemplateRequest(nickName), token));
+
 app.Run();

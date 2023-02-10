@@ -1,6 +1,6 @@
 using FluentValidation;
 using MediatR;
-using ValidationException = askon_test_application.Exception.ValidationException;
+using ValidationException = askon_test_domain.Exceptions.ValidationException;
 
 namespace askon_test_application.Behaviors;
 
