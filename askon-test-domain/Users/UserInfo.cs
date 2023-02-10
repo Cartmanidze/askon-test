@@ -28,6 +28,11 @@ public class UserInfo
 	public string NickName { get; set; } = null!;
 
 	/// <summary>
+	/// Дата рождения
+	/// </summary>
+	public DateTime? BirthDate { get; set; }
+
+	/// <summary>
 	/// Идентификатор пользователя
 	/// </summary>
 	public Guid UserId { get; set; }

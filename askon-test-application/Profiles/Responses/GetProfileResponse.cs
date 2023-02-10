@@ -49,4 +49,9 @@ public class GetProfileResponse
 	/// Html шаблон
 	/// </summary>
 	public string? Html { get; set; }
+
+	/// <summary>
+	/// Дата рождения
+	/// </summary>
+	public DateTime? BirthDate { get; set; }
 }

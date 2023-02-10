@@ -50,6 +50,11 @@ public class EditProfileRequest : IRequest<GetProfileResponse>
 	/// Псевдоним
 	/// </summary>
 	public string NickName { get; set; } = null!;
+
+	/// <summary>
+	/// Дата рождения
+	/// </summary>
+	public DateTime? BirthDate { get; set; }
 }
 
 /// <inheritdoc />
@@ -128,6 +133,11 @@ public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, Get
 		if (request.PhoneNumber != null)
 		{
 			oldUserInfo.User!.PhoneNumber = request.PhoneNumber;
+		}
+
+		if (request.BirthDate != null)
+		{
+			oldUserInfo.BirthDate = request.BirthDate;
 		}
 
 		return oldUserInfo;
