@@ -1,17 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ApplicationException = askon_test_domain.Exceptions.ApplicationException;
 
-namespace askon_test_application.Exception
+namespace askon_test_application.Exception;
+
+/// <inheritdoc />
+public sealed class ValidationException : ApplicationException
 {
-	public sealed class ValidationException : askon_test_domain.Exceptions.ApplicationException
-	{
-		public ValidationException(IReadOnlyDictionary<string, string[]> errorsDictionary)
-			: base("Validation Failure", "One or more validation errors occurred")
-			=> ErrorsDictionary = errorsDictionary;
+	/// <inheritdoc />
+	public ValidationException(IReadOnlyDictionary<string, string[]> errorsDictionary)
+		: base("Validation Failure", "One or more validation errors occurred") => ErrorsDictionary = errorsDictionary;
 
-		public IReadOnlyDictionary<string, string[]> ErrorsDictionary { get; }
-	}
+	/// <summary>
+	/// Ошибки
+	/// </summary>
+	public IReadOnlyDictionary<string, string[]> ErrorsDictionary { get; }
 }

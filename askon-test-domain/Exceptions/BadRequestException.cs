@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace askon_test_domain.Exceptions;
 
-namespace askon_test_domain.Exceptions
+/// <inheritdoc />
+public abstract class BadRequestException : ApplicationException
 {
-	public abstract class BadRequestException : ApplicationException
+	/// <inheritdoc />
+	protected BadRequestException(string message)
+		: base("Bad Request", message)
 	{
-		protected BadRequestException(string message)
-			: base("Bad Request", message)
-		{
-		}
 	}
 }

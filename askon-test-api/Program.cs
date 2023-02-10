@@ -1,8 +1,8 @@
 using System.Text;
+using askon_test_api.Middleware;
 using askon_test_api.Views;
 using askon_test_application;
 using askon_test_application.Profiles.Requests;
-using askon_test_application.Templates.Requests;
 using askon_test_application.Users.Requests;
 using askon_test_dal;
 using askon_test_infrastructure;
@@ -12,8 +12,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+	.WriteTo.Console()
+	.WriteTo.Debug()
+	.CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -24,6 +32,7 @@ builder.Services.AddMvc(option =>
 	option.EnableEndpointRouting = false;
 
 	var policy = new AuthorizationPolicyBuilder()
+		.RequireAuthenticatedUser()
 		.RequireAuthenticatedUser()
 		.Build();
 
@@ -50,6 +59,8 @@ builder.Services.AddDalServices(builder.Configuration);
 
 builder.Services.AddApplicationLayerServices();
 
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
@@ -62,19 +73,12 @@ app.UseSwaggerUI();
 
 app.UseApplyMigration();
 
-app.MapPost("/login", [AllowAnonymous](LoginView view, IMediator mediator, CancellationToken token) => mediator.Send(new LoginRequest
-{
-	Email = view.Email,
-	Password = view.Password
-}, token));
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.MapPost("/login", [AllowAnonymous](LoginRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
 
 app.MapPost("/register",
-	[AllowAnonymous](RegistrationView view, IMediator mediator, CancellationToken token) => mediator.Send(new RegistrationRequest
-	{
-		Login = view.Login,
-		NickName = view.NickName,
-		Password = view.Password
-	}, token));
+	[AllowAnonymous](RegistrationRequest request, IMediator mediator, CancellationToken token) => mediator.Send(request, token));
 
 app.MapGet("/user/{nickName}", (string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetProfileRequest
 {
@@ -92,13 +96,6 @@ app.MapPut("/user/{nickName}", (string nickName, EditProfileView view, IMediator
 		FirstName = view.FirstName,
 		LastName = view.LastName,
 		MiddleName = view.MiddleName
-	}, token));
-
-app.MapPut("/user/{nickName}/template", (string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
-	mediator.Send(new EditTemplateRequest
-	{
-		NickName = nickName,
-		Html = view.Html
 	}, token));
 
 app.Run();
