@@ -1,9 +1,11 @@
 using askon_test_application.Users.Responses;
+using askon_test_domain.Exceptions;
 using askon_test_domain.Users;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using askon_test_infrastructure.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace askon_test_application.Users.Requests;
 
@@ -32,12 +34,15 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 
 	private readonly UserManager<User> _userManager;
 
+	private readonly ILogger<LoginRequestHandler> _logger;
+
 	/// <summary>
 	/// .ctor
 	/// </summary>
 	public LoginRequestHandler(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator jwtGenerator,
-								IUserInfoReadOnlyRepository userInfoReadOnlyRepository)
+								IUserInfoReadOnlyRepository userInfoReadOnlyRepository, ILogger<LoginRequestHandler> logger)
 	{
+		_logger = logger;
 		_userManager = userManager;
 		_signInManager = signInManager;
 		_jwtGenerator = jwtGenerator;
@@ -47,11 +52,13 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 	/// <inheritdoc />
 	public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
 	{
+		_logger.LogInformation("LoginRequest started");
+
 		var user = await _userManager.FindByEmailAsync(request.Email);
 
 		if (user == null)
 		{
-			throw new();
+			throw new UserNotFoundException(request.Email);
 		}
 
 		var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);

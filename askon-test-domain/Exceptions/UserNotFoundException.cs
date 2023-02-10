@@ -8,7 +8,7 @@ namespace askon_test_domain.Exceptions
 {
 	public sealed class UserNotFoundException : NotFoundException
 	{
-		public UserNotFoundException(int userId)
+		public UserNotFoundException(string userId)
 			: base($"The user with the identifier {userId} was not found.")
 		{
 		}

@@ -12,8 +12,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+	.WriteTo.Console()
+	.WriteTo.Debug()
+	.CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddEndpointsApiExplorer();
 
