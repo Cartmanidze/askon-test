@@ -34,12 +34,12 @@ public class GetPdfTemplateRequestHandler : IRequestHandler<GetPdfTemplateReques
 			throw new TemplateNotFoundException(request.NickName);
 		}
 
-		await using var ms = new MemoryStream();
+		await using var stream = new MemoryStream();
 
 		var pdf = PdfGenerator.GeneratePdf(userInfo.Template.Html, PageSize.A4);
 
-		pdf.Save(ms);
+		pdf.Save(stream);
 
-		return new($"{request.NickName}.pdf", ms);
+		return new($"{request.NickName}.pdf", stream);
 	}
 }

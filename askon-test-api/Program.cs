@@ -115,12 +115,20 @@ app.MapPut("/user/{nickName}/template", (string nickName, EditTemplateView view,
 		Html = view.Html
 	}, token));
 
-app.MapGet("/user/{nickName}",
+app.MapGet("/user/{nickName}/pdf",
 	async (string nickName, IMediator mediator, CancellationToken token) =>
 	{
 		var (fileName, stream) = await mediator.Send(new GetPdfTemplateRequest(nickName), token);
 
 		return Results.File(stream, "application/pdf", fileName);
+	});
+
+app.MapGet("/user/{nickName}/doc",
+	async (string nickName, IMediator mediator, CancellationToken token) =>
+	{
+		var (fileName, stream) = await mediator.Send(new GetDocTemplateRequest(nickName), token);
+
+		return Results.File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
 	});
 
 app.Run();
