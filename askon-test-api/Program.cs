@@ -120,7 +120,18 @@ app.MapGet("/user/{nickName}/pdf",
 	{
 		var (fileName, stream) = await mediator.Send(new GetPdfTemplateRequest(nickName), token);
 
-		return Results.File(stream, "application/pdf", fileName);
+		try
+		{
+			stream.Position = 0;
+
+			return Results.File(stream, "application/pdf", fileName);
+		}
+		catch
+		{
+			await stream.DisposeAsync();
+
+			throw;
+		}
 	});
 
 app.MapGet("/user/{nickName}/doc",

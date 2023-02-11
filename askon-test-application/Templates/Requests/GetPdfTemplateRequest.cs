@@ -2,8 +2,7 @@
 using askon_test_domain.Exceptions;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using MediatR;
-using PdfSharp;
-using TheArtOfDev.HtmlRenderer.PdfSharp;
+using NReco.PdfGenerator;
 
 namespace askon_test_application.Templates.Requests;
 
@@ -34,11 +33,11 @@ public class GetPdfTemplateRequestHandler : IRequestHandler<GetPdfTemplateReques
 			throw new TemplateNotFoundException(request.NickName);
 		}
 
-		await using var stream = new MemoryStream();
+		var htmlToPdf = new HtmlToPdfConverter();
 
-		var pdf = PdfGenerator.GeneratePdf(userInfo.Template.Html, PageSize.A4);
+		var pdfBytes = htmlToPdf.GeneratePdf(userInfo.Template.Html);
 
-		pdf.Save(stream);
+		var stream = new MemoryStream(pdfBytes);
 
 		return new($"{request.NickName}.pdf", stream);
 	}
