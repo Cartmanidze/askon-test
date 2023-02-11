@@ -139,7 +139,18 @@ app.MapGet("/user/{nickName}/doc",
 	{
 		var (fileName, stream) = await mediator.Send(new GetDocTemplateRequest(nickName), token);
 
-		return Results.File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+		try
+		{
+			stream.Position = 0;
+
+			return Results.File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+		}
+		catch
+		{
+			await stream.DisposeAsync();
+
+			throw;
+		}
 	});
 
 app.Run();

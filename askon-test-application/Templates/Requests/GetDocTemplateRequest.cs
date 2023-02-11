@@ -36,7 +36,7 @@ public class GetDocTemplateRequestHandler : IRequestHandler<GetDocTemplateReques
 			throw new TemplateNotFoundException(request.NickName);
 		}
 
-		await using var stream = new MemoryStream();
+		var stream = new MemoryStream();
 
 		using var package = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
 
