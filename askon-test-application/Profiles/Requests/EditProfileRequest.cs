@@ -1,4 +1,5 @@
 ﻿using askon_test_application.Profiles.Responses;
+using askon_test_application.Users.Services.Interfaces;
 using askon_test_domain.Users;
 using askon_test_domain.Users.Repositories.ReadOnly.Interfaces;
 using askon_test_domain.Users.Repositories.WriteOnly;
@@ -60,6 +61,8 @@ public class EditProfileRequest : IRequest<GetProfileResponse>
 /// <inheritdoc />
 public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, GetProfileResponse>
 {
+	private readonly IEnemyChecker _enemyChecker;
+
 	private readonly IMediator _mediator;
 
 	private readonly IUserInfoReadOnlyRepository _userInfoReadOnlyRepository;
@@ -70,11 +73,12 @@ public class EditProfileRequestHandler : IRequestHandler<EditProfileRequest, Get
 	/// .ctor
 	/// </summary>
 	public EditProfileRequestHandler(IUserInfoWriteOnlyRepository userInfoWriteOnlyRepository, IMediator mediator,
-									IUserInfoReadOnlyRepository userInfoReadOnlyRepository)
+									IUserInfoReadOnlyRepository userInfoReadOnlyRepository, IEnemyChecker enemyChecker)
 	{
 		_userInfoWriteOnlyRepository = userInfoWriteOnlyRepository;
 		_mediator = mediator;
 		_userInfoReadOnlyRepository = userInfoReadOnlyRepository;
+		_enemyChecker = enemyChecker;
 	}
 
 	/// <inheritdoc />

@@ -5,6 +5,7 @@ using askon_test_application;
 using askon_test_application.Profiles.Requests;
 using askon_test_application.Templates.Requests;
 using askon_test_application.Users.Requests;
+using askon_test_application.Users.Services.Interfaces;
 using askon_test_dal;
 using askon_test_infrastructure;
 using askon_test_infrastructure.Options;
@@ -87,8 +88,12 @@ app.MapGet("/user/{nickName}",
 
 app.MapPut("/user/{nickName}",
 	[Authorize(AuthenticationSchemes = "Bearer")]
-	(string nickName, EditProfileView view, IMediator mediator, CancellationToken token) =>
-		mediator.Send(new EditProfileRequest
+	async (string nickName, EditProfileView view, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context,
+			CancellationToken token) =>
+	{
+		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+
+		return await mediator.Send(new EditProfileRequest
 		{
 			NickName = nickName,
 			Email = view.Email,
@@ -98,21 +103,29 @@ app.MapPut("/user/{nickName}",
 			FirstName = view.FirstName,
 			LastName = view.LastName,
 			MiddleName = view.MiddleName
-		}, token));
+		}, token);
+	});
 
 app.MapPut("/user/{nickName}/template",
 	[Authorize(AuthenticationSchemes = "Bearer")]
-	(string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
-		mediator.Send(new EditTemplateRequest
+	async (string nickName, EditTemplateView view, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context,
+			CancellationToken token) =>
+	{
+		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+
+		return await mediator.Send(new EditTemplateRequest
 		{
 			NickName = nickName,
 			Html = view.Html
-		}, token));
+		}, token);
+	});
 
 app.MapGet("/user/{nickName}/pdf",
 	[Authorize(AuthenticationSchemes = "Bearer")]
-	async (string nickName, IMediator mediator, HttpContext context, CancellationToken token) =>
+	async (string nickName, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context, CancellationToken token) =>
 	{
+		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+
 		var (fileName, stream) = await mediator.Send(new GetPdfTemplateRequest(nickName), token);
 
 		try
@@ -131,8 +144,10 @@ app.MapGet("/user/{nickName}/pdf",
 
 app.MapGet("/user/{nickName}/doc",
 	[Authorize(AuthenticationSchemes = "Bearer")]
-	async (string nickName, IMediator mediator, CancellationToken token) =>
+	async (string nickName, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context, CancellationToken token) =>
 	{
+		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+
 		var (fileName, stream) = await mediator.Send(new GetDocTemplateRequest(nickName), token);
 
 		try
