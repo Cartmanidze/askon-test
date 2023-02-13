@@ -54,9 +54,7 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 	{
 		_logger.LogInformation("LoginRequest started");
 
-		var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
-
-		var user = await _userManager.FindByLoginAsync(request.Login, loginInfo.ProviderKey);
+		var user = await _userManager.FindByNameAsync(request.Login);
 
 		if (user == null)
 		{

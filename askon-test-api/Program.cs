@@ -11,7 +11,6 @@ using askon_test_infrastructure.Options;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
@@ -28,23 +27,16 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMvc(option =>
-{
-	option.EnableEndpointRouting = false;
-
-	var policy = new AuthorizationPolicyBuilder()
-		.RequireAuthenticatedUser()
-		.RequireAuthenticatedUser()
-		.Build();
-
-	option.Filters.Add(new AuthorizeFilter(policy));
-});
-
 var tokenAccess = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection(nameof(AuthOptions))
 	.Get<AuthOptions>()
 	.TokenKey));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+	{
+		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	})
 	.AddJwtBearer(opt =>
 	{
 		opt.TokenValidationParameters = new()
@@ -56,6 +48,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		};
 	});
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddDalServices(builder.Configuration);
 
 builder.Services.AddApplicationLayerServices();
@@ -66,15 +60,9 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseAuthentication();
-
-app.UseSwagger();
-
-app.UseSwaggerUI();
-
-app.UseApplyMigration();
-
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseHttpsRedirection();
 
 app.MapPost("/login", [AllowAnonymous](LoginView view, IMediator mediator, CancellationToken token) => mediator.Send(new LoginRequest
 {
@@ -90,32 +78,37 @@ app.MapPost("/register",
 		Password = view.Password
 	}, token));
 
-app.MapGet("/user/{nickName}", (string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetProfileRequest
-{
-	NickName = nickName
-}, token));
+app.MapGet("/user/{nickName}",
+	[Authorize(AuthenticationSchemes = "Bearer")](string nickName, IMediator mediator, CancellationToken token) => mediator.Send(
+		new GetProfileRequest
+		{
+			NickName = nickName
+		}, token));
 
-app.MapPut("/user/{nickName}", (string nickName, EditProfileView view, IMediator mediator, CancellationToken token) => mediator.Send(
-	new EditProfileRequest
-	{
-		NickName = nickName,
-		Email = view.Email,
-		PhoneNumber = view.PhoneNumber,
-		Avatar = view.Avatar,
-		Description = view.Description,
-		FirstName = view.FirstName,
-		LastName = view.LastName,
-		MiddleName = view.MiddleName
-	}, token));
+app.MapPut("/user/{nickName}",
+	[Authorize(AuthenticationSchemes = "Bearer")](string nickName, EditProfileView view, IMediator mediator, CancellationToken token) =>
+		mediator.Send(new EditProfileRequest
+		{
+			NickName = nickName,
+			Email = view.Email,
+			PhoneNumber = view.PhoneNumber,
+			Avatar = view.Avatar,
+			Description = view.Description,
+			FirstName = view.FirstName,
+			LastName = view.LastName,
+			MiddleName = view.MiddleName
+		}, token));
 
-app.MapPut("/user/{nickName}/template", (string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
-	mediator.Send(new EditTemplateRequest
-	{
-		NickName = nickName,
-		Html = view.Html
-	}, token));
+app.MapPut("/user/{nickName}/template",
+	[Authorize(AuthenticationSchemes = "Bearer")](string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
+		mediator.Send(new EditTemplateRequest
+		{
+			NickName = nickName,
+			Html = view.Html
+		}, token));
 
 app.MapGet("/user/{nickName}/pdf",
+	[Authorize(AuthenticationSchemes = "Bearer")]
 	async (string nickName, IMediator mediator, CancellationToken token) =>
 	{
 		var (fileName, stream) = await mediator.Send(new GetPdfTemplateRequest(nickName), token);
@@ -135,6 +128,7 @@ app.MapGet("/user/{nickName}/pdf",
 	});
 
 app.MapGet("/user/{nickName}/doc",
+	[Authorize(AuthenticationSchemes = "Bearer")]
 	async (string nickName, IMediator mediator, CancellationToken token) =>
 	{
 		var (fileName, stream) = await mediator.Send(new GetDocTemplateRequest(nickName), token);
@@ -152,5 +146,15 @@ app.MapGet("/user/{nickName}/doc",
 			throw;
 		}
 	});
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.UseSwagger();
+
+app.UseSwaggerUI();
+
+app.UseApplyMigration();
 
 app.Run();
