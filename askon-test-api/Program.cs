@@ -65,13 +65,13 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
-app.MapPost("/login", [AllowAnonymous](LoginView view, IMediator mediator, CancellationToken token) => mediator.Send(new LoginRequest
+app.MapPost("/api/login", [AllowAnonymous](LoginView view, IMediator mediator, CancellationToken token) => mediator.Send(new LoginRequest
 {
 	Login = view.Login,
 	Password = view.Password
 }, token));
 
-app.MapPost("/register",
+app.MapPost("/api/register",
 	[AllowAnonymous](RegistrationView view, IMediator mediator, CancellationToken token) => mediator.Send(new RegistrationRequest
 	{
 		Login = view.Login,
@@ -79,19 +79,18 @@ app.MapPost("/register",
 		Password = view.Password
 	}, token));
 
-app.MapGet("/user/{nickName}",
+app.MapGet("/api/user/{nickName}",
 	[Authorize(AuthenticationSchemes = "Bearer")]
 	(string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetProfileRequest
 	{
 		NickName = nickName
 	}, token));
 
-app.MapPut("/user/{nickName}",
-	[Authorize(AuthenticationSchemes = "Bearer")]
+app.MapPut("/api/user/{nickName}",
 	async (string nickName, EditProfileView view, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context,
 			CancellationToken token) =>
 	{
-		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+		//await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
 
 		return await mediator.Send(new EditProfileRequest
 		{
@@ -106,12 +105,12 @@ app.MapPut("/user/{nickName}",
 		}, token);
 	});
 
-app.MapPut("/user/{nickName}/template",
+app.MapPut("/api/user/{nickName}/template",
 	[Authorize(AuthenticationSchemes = "Bearer")]
 	async (string nickName, EditTemplateView view, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context,
 			CancellationToken token) =>
 	{
-		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+		//await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
 
 		return await mediator.Send(new EditTemplateRequest
 		{
@@ -120,11 +119,11 @@ app.MapPut("/user/{nickName}/template",
 		}, token);
 	});
 
-app.MapGet("/user/{nickName}/pdf",
+app.MapGet("/api/user/{nickName}/pdf",
 	[Authorize(AuthenticationSchemes = "Bearer")]
 	async (string nickName, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context, CancellationToken token) =>
 	{
-		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+		//await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
 
 		var (fileName, stream) = await mediator.Send(new GetPdfTemplateRequest(nickName), token);
 
@@ -142,11 +141,11 @@ app.MapGet("/user/{nickName}/pdf",
 		}
 	});
 
-app.MapGet("/user/{nickName}/doc",
+app.MapGet("/api/user/{nickName}/doc",
 	[Authorize(AuthenticationSchemes = "Bearer")]
 	async (string nickName, IMediator mediator, IEnemyChecker enemyChecker, HttpContext context, CancellationToken token) =>
 	{
-		await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
+		//await enemyChecker.ThrowIfEnemyAsync(nickName, context, token);
 
 		var (fileName, stream) = await mediator.Send(new GetDocTemplateRequest(nickName), token);
 

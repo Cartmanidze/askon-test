@@ -27,9 +27,9 @@ public class EnemyChecker : IEnemyChecker
 	{
 		var userInfo = await _userInfoReadOnlyRepository.GetAsync(nickName, token);
 
-		var claimName = _jwtReader.GetUserAsync(nickName, httpContext, token);
+		var claimName = await _jwtReader.GetUserAsync(userInfo!.User!.UserName, httpContext, token);
 
-		if (userInfo!.User!.UserName!.Equals(claimName))
+		if (userInfo.User!.UserName!.Equals(claimName))
 		{
 			return;
 		}

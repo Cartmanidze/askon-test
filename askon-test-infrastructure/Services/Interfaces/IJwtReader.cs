@@ -14,5 +14,5 @@ public interface IJwtReader
 	/// <param name="httpContext"> Http контекст </param>
 	/// <param name="token"> Токен отмены </param>
 	/// <returns> Имя пользователя </returns>
-	string GetUserAsync(string userName, HttpContext httpContext, CancellationToken token);
+	Task<string> GetUserAsync(string userName, HttpContext httpContext, CancellationToken token);
 }
