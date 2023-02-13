@@ -26,6 +26,8 @@ public static class InfrastructureLayerRegistration
 
 		services.AddScoped<IJwtGenerator, JwtGenerator>();
 
+		services.AddScoped<IJwtReader, JwtReader>();
+
 		return services;
 	}
 

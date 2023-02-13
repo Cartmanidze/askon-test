@@ -79,14 +79,15 @@ app.MapPost("/register",
 	}, token));
 
 app.MapGet("/user/{nickName}",
-	[Authorize(AuthenticationSchemes = "Bearer")](string nickName, IMediator mediator, CancellationToken token) => mediator.Send(
-		new GetProfileRequest
-		{
-			NickName = nickName
-		}, token));
+	[Authorize(AuthenticationSchemes = "Bearer")]
+	(string nickName, IMediator mediator, CancellationToken token) => mediator.Send(new GetProfileRequest
+	{
+		NickName = nickName
+	}, token));
 
 app.MapPut("/user/{nickName}",
-	[Authorize(AuthenticationSchemes = "Bearer")](string nickName, EditProfileView view, IMediator mediator, CancellationToken token) =>
+	[Authorize(AuthenticationSchemes = "Bearer")]
+	(string nickName, EditProfileView view, IMediator mediator, CancellationToken token) =>
 		mediator.Send(new EditProfileRequest
 		{
 			NickName = nickName,
@@ -100,7 +101,8 @@ app.MapPut("/user/{nickName}",
 		}, token));
 
 app.MapPut("/user/{nickName}/template",
-	[Authorize(AuthenticationSchemes = "Bearer")](string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
+	[Authorize(AuthenticationSchemes = "Bearer")]
+	(string nickName, EditTemplateView view, IMediator mediator, CancellationToken token) =>
 		mediator.Send(new EditTemplateRequest
 		{
 			NickName = nickName,
@@ -109,7 +111,7 @@ app.MapPut("/user/{nickName}/template",
 
 app.MapGet("/user/{nickName}/pdf",
 	[Authorize(AuthenticationSchemes = "Bearer")]
-	async (string nickName, IMediator mediator, CancellationToken token) =>
+	async (string nickName, IMediator mediator, HttpContext context, CancellationToken token) =>
 	{
 		var (fileName, stream) = await mediator.Send(new GetPdfTemplateRequest(nickName), token);
 
