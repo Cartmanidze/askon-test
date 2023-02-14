@@ -21,6 +21,8 @@ services:
   askon-test-client:
     image: developer128/askon-test-client
     container_name: askon-test-client
+    environment:
+      API_HOST: "askon-test"
     ports:
     - "8080:8080"
     - "80:80"
