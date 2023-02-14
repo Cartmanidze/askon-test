@@ -8,11 +8,9 @@ namespace askon_test_infrastructure.Services.Interfaces;
 public interface IJwtReader
 {
 	/// <summary>
-	/// Получить имя пользователя
+	/// Получить NameId claim
 	/// </summary>
-	/// <param name="userName"> Имя пользователя </param>
 	/// <param name="httpContext"> Http контекст </param>
-	/// <param name="token"> Токен отмены </param>
-	/// <returns> Имя пользователя </returns>
-	Task<string> GetUserAsync(string userName, HttpContext httpContext, CancellationToken token);
+	/// <returns> NameId claim </returns>
+	string GetNameIdClaimAsync(HttpContext httpContext);
 }

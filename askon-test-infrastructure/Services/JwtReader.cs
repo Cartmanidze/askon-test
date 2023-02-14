@@ -1,30 +1,28 @@
-﻿using askon_test_domain.Users;
+﻿using System.IdentityModel.Tokens.Jwt;
 using askon_test_infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace askon_test_infrastructure.Services;
 
 /// <inheritdoc />
 public class JwtReader : IJwtReader
 {
-	private readonly UserManager<User> _userManager;
-
-	/// <summary>
-	/// .ctor
-	/// </summary>
-	public JwtReader(UserManager<User> userManager) => _userManager = userManager;
-
 	/// <inheritdoc />
-	public async Task<string> GetUserAsync(string userName, HttpContext httpContext, CancellationToken token)
+	public string GetNameIdClaimAsync(HttpContext httpContext)
 	{
-		var user = await _userManager.FindByNameAsync(userName);
+		var accessToken = httpContext.Request.Headers["Authorization"]
+			.ToString()
+			.Replace("Bearer ", "");
 
-		var userClaims = await _userManager.GetClaimsAsync(user);
+		var handler = new JwtSecurityTokenHandler();
 
-		var userClaim = userClaims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId);
+		var jsonToken = handler.ReadToken(accessToken);
 
-		return userClaim!.Value;
+		var tokenS = jsonToken as JwtSecurityToken;
+
+		var nameId = tokenS!.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.NameId)
+			.Value;
+
+		return nameId;
 	}
 }
