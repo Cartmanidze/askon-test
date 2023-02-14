@@ -18,3 +18,11 @@ services:
     - "5179:80"
     depends_on:
     - sql-server-db
+  askon-test-client:
+    image: developer128/askon-test-client
+    container_name: askon-test-client
+    ports:
+    - "8080:8080"
+    - "80:80"
+    depends_on:
+    - askon-test
